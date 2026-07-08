@@ -6,20 +6,20 @@ const GerenciarDepoimentos = () => {
 
     const fetchDepoimentos = async () => {
         // Busca TODOS (pendentes e aprovados)
-        const res = await fetch('/api/depoimentos/todos');
+        const res = await fetch((import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com') + '/api/depoimentos/todos');
         if (res.ok) setDepoimentos(await res.json());
     };
 
     useEffect(() => { fetchDepoimentos(); }, []);
 
     const handleAprovar = async (id) => {
-        await fetch(`/api/depoimentos/${id}/aprovar`, { method: 'PUT' });
+        await fetch(`${import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com'}/api/depoimentos/${id}/aprovar`, { method: 'PUT' });
         fetchDepoimentos();
     };
 
     const handleDelete = async (id) => {
         if(confirm('Apagar este depoimento?')) {
-            await fetch(`/api/depoimentos/${id}`, { method: 'DELETE' });
+            await fetch(`${import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com'}/api/depoimentos/${id}`, { method: 'DELETE' });
             fetchDepoimentos();
         }
     }

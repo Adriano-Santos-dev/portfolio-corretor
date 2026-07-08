@@ -5,12 +5,16 @@ const FormularioDepoimento = () => {
     const [form, setForm] = useState({ nome: '', local: '', texto: '', estrelas: '5' });
     const [status, setStatus] = useState('');
 
+    // Captura a URL do backend configurada na Vercel
+    const API_URL = import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com';
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('Enviando...');
         
         try {
-            const res = await fetch('/api/depoimentos', {
+            // Adiciona a API_URL antes da rota do endpoint
+            const res = await fetch(`${API_URL}/api/depoimentos`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form)
@@ -45,7 +49,7 @@ const FormularioDepoimento = () => {
 
                 <div className="material-input-group">
                     <select className="material-input-field" value={form.estrelas} onChange={e => setForm({...form, estrelas: e.target.value})}>
-                        <option value="5">⭐⭐⭐⭐⭐ (Excelenta)</option>
+                        <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
                         <option value="4">⭐⭐⭐⭐ (Muito Bom)</option>
                         <option value="3">⭐⭐⭐ (Bom)</option>
                         <option value="2">⭐⭐ (Mais ou Menos)</option>

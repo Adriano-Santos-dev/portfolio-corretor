@@ -98,7 +98,7 @@ const Cotacao = () => {
         setStatusEnvio('Enviando...');
 
         try {
-            const response = await fetch('/api/cotacoes', {
+            const response = await fetch((import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com') + '/api/cotacoes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dadosParaEnviar),

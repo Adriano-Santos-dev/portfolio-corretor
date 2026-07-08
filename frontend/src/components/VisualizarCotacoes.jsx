@@ -12,7 +12,7 @@ const VisualizarCotacoes = () => {
     const fetchCotacoes = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/cotacoes');
+            const res = await fetch((import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com') + '/api/cotacoes');
             if (res.ok) setCotacoes(await res.json());
         } catch (error) {
             console.error("Erro ao buscar cotações:", error);
@@ -29,7 +29,7 @@ const VisualizarCotacoes = () => {
             setCotacaoSelecionada(prev => ({ ...prev, status: novoStatus }));
         }
 
-        await fetch(`/api/cotacoes/${id}/status`, {
+        await fetch(`${import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com'}/api/cotacoes/${id}/status`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: novoStatus })
@@ -38,7 +38,7 @@ const VisualizarCotacoes = () => {
 
     const handleDelete = async (id) => {
         if(confirm('Tem certeza que deseja apagar este lead?')) {
-            await fetch(`/api/cotacoes/${id}`, { method: 'DELETE' });
+            await fetch(`${import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com'}/api/cotacoes/${id}`, { method: 'DELETE' });
             setModalAberto(false); // Fecha modal se estiver aberto
             fetchCotacoes();
         }

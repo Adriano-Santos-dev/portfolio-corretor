@@ -17,10 +17,10 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
-        const resAtu = await fetch('/api/atualizacoes');
+        const resAtu = await fetch((import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com') + '/api/atualizacoes');
         if (resAtu.ok) setAtualizacoes(await resAtu.json());
 
-        const resDepo = await fetch('/api/depoimentos/publicos');
+        const resDepo = await fetch((import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com') + '/api/depoimentos/publicos');
         if (resDepo.ok) setDepoimentos(await resDepo.json());
 
       } catch (error) {

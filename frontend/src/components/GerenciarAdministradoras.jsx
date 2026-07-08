@@ -9,7 +9,7 @@ const GerenciarAdministradoras = () => {
 
     const fetchAdmins = async () => {
         try {
-            const res = await fetch('/api/administradoras');
+            const res = await fetch((import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com') + '/api/administradoras');
             if (res.ok) setAdmins(await res.json());
         } catch (error) {
             console.error("Erro ao buscar admins:", error);
@@ -30,7 +30,7 @@ const GerenciarAdministradoras = () => {
         setStatus('Enviando...');
         
         try {
-            const response = await fetch('/api/administradoras', {
+            const response = await fetch((import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com') + '/api/administradoras', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form)
@@ -53,7 +53,7 @@ const GerenciarAdministradoras = () => {
 
     const handleDelete = async (id) => {
         if (window.confirm('Tem certeza que deseja deletar esta administradora?')) {
-            await fetch(`/api/administradoras/${id}`, { method: 'DELETE' });
+            await fetch(`${import.meta.env.VITE_API_URL || 'https://portfolio-corretor.onrender.com'}/api/administradoras/${id}`, { method: 'DELETE' });
             fetchAdmins();
         }
     }
