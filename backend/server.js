@@ -8,17 +8,17 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 const app = express();
 
-app.use(cors());
-// AUMENTAR O LIMITE PARA ACEITAR IMAGENS BASE64 (50MB)
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+const corsOptions = {
+    origin: [
+        'http://localhost:5173', // Para você testar localmente na sua máquina
+        'http://localhost:3000', // Outra porta comum de desenvolvimento local
+        'https://portfolio-corretor.vercel.app'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+};
 
-// Conexão MongoDB
-if (MONGODB_URI) {
-    mongoose.connect(MONGODB_URI)
-        .then(() => console.log('✅ MongoDB Atlas conectado!'))
-        .catch(err => console.error('❌ Erro MongoDB:', err));
-}
+app.use(cors(corsOptions));
 
 // SCHEMAS
 const defaultOpts = { timestamps: true };
@@ -207,15 +207,5 @@ app.delete('/api/depoimentos/:id', async (req, res) => {
     catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-
-// SERVIR FRONTEND (PRODUÇÃO)
-const FRONTEND_DIR = path.join(__dirname, '..', 'frontend', 'dist');
-app.use(express.static(FRONTEND_DIR));
-
-// Qualquer rota que não seja /api manda pro React (SPA)
-app.get('/*', (req, res) => {
-    if (!req.path.startsWith('/api')) res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
-    else res.status(404).json({ error: 'API não encontrada' });
-});
 
 app.listen(PORT, () => console.log(`🔥 Server ON ${PORT}`));
